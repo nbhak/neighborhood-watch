@@ -9,6 +9,10 @@
         "48": "images/icon.png",
         "128": "images/icon.png"
     },
+    "background": {
+      "service_worker":"scripts/firebase.js",
+      "type": "module"
+    },
     "content_scripts": [
         {
           "js": ["scripts/watch.js"],
