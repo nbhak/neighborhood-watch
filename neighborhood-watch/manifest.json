@@ -9,12 +9,20 @@
         "48": "images/icon.png",
         "128": "images/icon.png"
     },
+    "action": {
+      "default_icon": "images/icon.png",
+      "default_popup": "popup.html",
+      "default_title": "My very first chrome extension WHOOP!!"
+    },
     "content_scripts": [
         {
-          "js": ["scripts/watch.js"],
+          "js": ["scripts/watch.js", "scripts/popup.js"],
           "matches": [
             "<all_urls>"
           ]
         }
+    ],
+    "permissions": [
+      "activeTab"
     ]
 }
