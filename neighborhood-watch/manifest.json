@@ -20,7 +20,7 @@
     },
     "content_scripts": [
         {
-          "js": ["scripts/watch.js", "scripts/popup.js"],
+          "js": ["scripts/popup.js"],
           "matches": [
             "<all_urls>"
           ]

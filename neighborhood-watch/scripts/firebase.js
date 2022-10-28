@@ -23,18 +23,19 @@ console.log(firebase);
 const db = getDatabase(firebase);
 
 function writeDarkPatternData(encodedUrl, description) {
+    console.log("Writing to firebase: " + encodedUrl + " " + description);
     set(ref(db, 'urls/' + encodedUrl), {
         description: description
     });
 }
 
-const urlStr = "https://www.facebook.com"
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request) {
-        if (request.msg === "REPORT") {
+        if (request.msg === "Report from user") {
+            const urlStr = request.data[0];
             let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
-            writeDarkPatternData(encodedUrl, request.data);
+            const description = request.data[1];
+            writeDarkPatternData(encodedUrl, description);
         }
     }
 });
