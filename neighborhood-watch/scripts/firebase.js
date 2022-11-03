@@ -22,6 +22,15 @@ const firebase = initializeApp(firebaseConfig);
 console.log(firebase);
 const db = getDatabase(firebase);
 
+function readDarkPatternData(urlStr) {
+    const encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
+    const urlRef = ref(db, 'urls/' + encodedUrl);
+    onValue(urlRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+    });
+}
+
 function writeDarkPatternData(encodedUrl, description) {
     console.log("Writing to firebase: " + encodedUrl + " " + description);
     set(ref(db, 'urls/' + encodedUrl), {
@@ -36,6 +45,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
             const description = request.data[1];
             writeDarkPatternData(encodedUrl, description);
+        } else if (request.msg === "Retrieve information") {
+            const urlStr = request.data;
+            readDarkPatternData(urlStr);
         }
     }
 });
