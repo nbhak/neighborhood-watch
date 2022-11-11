@@ -1,5 +1,5 @@
 import { initializeApp } from "/firebase/firebase-app.js";
-import { getDatabase, ref, set, child, update, remove, onValue } from "/firebase/firebase-database.js";
+import { getDatabase, ref, get, set, push, child, update, remove, onValue } from "/firebase/firebase-database.js";
 
 let apiKey;
 const url = chrome.runtime.getURL('/files/secrets.json');
@@ -24,16 +24,20 @@ const db = getDatabase(firebase);
 
 function readDarkPatternData(urlStr) {
     const encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
-    const urlRef = ref(db, 'urls/' + encodedUrl);
-    onValue(urlRef, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
-    });
+    const reference = ref(db, 'urls/' + encodedUrl);
+    get(reference).then((snapshot) => {
+        snapshot.forEach((child) => {
+          console.log(child.key, child.val());
+        });
+      }).catch((error) => {
+        console.error(error);
+      });
 }
 
 function writeDarkPatternData(encodedUrl, description) {
     console.log("Writing to firebase: " + encodedUrl + " " + description);
-    set(ref(db, 'urls/' + encodedUrl), {
+    const reportRef = ref(db, 'urls/' + encodedUrl);
+    set(push(reportRef), {
         description: description
     });
 }
