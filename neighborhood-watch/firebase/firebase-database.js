@@ -6224,5 +6224,3 @@ export {
     Ds as startAt,
     gs as update,
 };
-
-//# sourceMappingURL=firebase-database.js.map

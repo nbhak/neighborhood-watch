@@ -19,7 +19,6 @@ const firebaseConfig = {
 };
 
 const firebase = initializeApp(firebaseConfig);
-console.log(firebase);
 const db = getDatabase(firebase);
 
 function readDarkPatternData(urlStr) {
@@ -52,6 +51,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (request.msg === "Retrieve information") {
             const urlStr = request.data;
             readDarkPatternData(urlStr);
+        } else if (request.msg === "Retrieve with URL") {
+            // TODO: 
+            chrome.tabs.query(
+                {
+                    active: true,
+                    lastFocusedWindow: true
+                },
+                function(tabs) {
+                    let url = tabs[0].url;
+                    console.log("URL: " + url)
+                    readDarkPatternData(url);
+            });
         }
     }
 });

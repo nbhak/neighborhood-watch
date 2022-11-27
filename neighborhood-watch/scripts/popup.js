@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const checkPageButton = document.getElementById('clickIt');
     const inputBox = document.getElementById('getValues');
-    
     chrome.tabs.query(
         {
             active: true,
@@ -11,8 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
             let url = tabs[0].url;
             chrome.runtime.sendMessage({msg: "Retrieve information", data: url});
     });
-    
-    chrome.runtime.sendMessage({msg: "Retrieve information", data: []})
     checkPageButton.addEventListener('click', function() {
         chrome.tabs.query(
         {

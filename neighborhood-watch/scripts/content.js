@@ -1,0 +1,1 @@
+chrome.runtime.sendMessage({msg: "Retrieve with URL"});
