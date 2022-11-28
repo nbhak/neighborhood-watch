@@ -48,11 +48,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
             const description = request.data[1];
             writeDarkPatternData(encodedUrl, description);
-        } else if (request.msg === "Retrieve information") {
-            const urlStr = request.data;
-            readDarkPatternData(urlStr);
         } else if (request.msg === "Retrieve with URL") {
-            // TODO: 
             chrome.tabs.query(
                 {
                     active: true,
