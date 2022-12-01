@@ -9,7 +9,6 @@ chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request) {
         if (request.msg == "Report from user") {
-            console.log("Select an element to report.")
             elementSelect();
         }
     }
