@@ -14,6 +14,7 @@
 // We use them to uniquely identify an element on the page
 // Remember to account for non-existing elements
 
+/*
 const highlighter = document.createElement("div");
 highlighter.style.position = "absolute";
 highlighter.style.background = "rgba(38, 24, 159, 0.5)";
@@ -45,3 +46,4 @@ document.addEventListener("mousemove", (e) => {
     highlighter.style.top = measurements.top + window.scrollY - border + "px";
     highlighter.style.left = measurements.left + window.scrollX - border + "px";
 });
+*/

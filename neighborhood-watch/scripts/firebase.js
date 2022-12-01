@@ -21,44 +21,50 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const db = getDatabase(firebase);
 
-function readDarkPatternData(urlStr) {
+// Retrieves array of reports from database for a given URL
+function readDarkPatternData(urlStr, sendResponse) {
     const encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
     const reference = ref(db, 'urls/' + encodedUrl);
+    let reports = [];
     get(reference).then((snapshot) => {
         snapshot.forEach((child) => {
-          console.log(child.key, child.val());
+          reports.push(child.val());
         });
+        sendResponse({data: reports});
       }).catch((error) => {
         console.error(error);
       });
 }
 
-function writeDarkPatternData(encodedUrl, description) {
-    console.log("Writing to firebase: " + encodedUrl + " " + description);
-    const reportRef = ref(db, 'urls/' + encodedUrl);
-    set(push(reportRef), {
-        description: description
-    });
+// Writes report for element to database
+function writeDarkPatternData(encodedUrl, elementInfo, elementIdx) {
+    console.log("Writing to firebase: " + elementInfo);
+    const reportRef = ref(db, 'urls/' + encodedUrl + '/' + elementInfo);
+    set(reportRef, elementIdx);
 }
 
+// Catches read and write requests to database
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request) {
         if (request.msg === "Report from user") {
             const urlStr = request.data[0];
             let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
-            const description = request.data[1];
-            writeDarkPatternData(encodedUrl, description);
+            const elementInfo = request.data[1];
+            const elementIdx = request.data[2];
+            writeDarkPatternData(encodedUrl, elementInfo, elementIdx);
         } else if (request.msg === "Retrieve with URL") {
+            // If reports requested, retrieve from database and respond
             chrome.tabs.query(
                 {
                     active: true,
-                    lastFocusedWindow: true
+                    currentWindow: true
                 },
                 function(tabs) {
                     let url = tabs[0].url;
-                    console.log("URL: " + url)
-                    readDarkPatternData(url);
+                    console.log("URL: " + url);
+                    readDarkPatternData(url, sendResponse);
             });
         }
     }
+    return true;
 });
