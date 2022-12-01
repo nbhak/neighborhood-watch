@@ -37,21 +37,21 @@ function readDarkPatternData(urlStr, sendResponse) {
 }
 
 // Writes report for element to database
-function writeDarkPatternData(encodedUrl, elementInfo, elementIdx) {
+function writeDarkPatternData(urlStr, elementInfo, elementIdx) {
     console.log("Writing to firebase: " + elementInfo);
-    const reportRef = ref(db, 'urls/' + encodedUrl + '/' + elementInfo);
-    set(reportRef, elementIdx);
+    let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
+    const reportRef = ref(db, 'urls/' + encodedUrl + '/' + elementInfo + '/' + elementIdx);
+    set(reportRef, true);
 }
 
 // Catches read and write requests to database
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request) {
         if (request.msg === "Report from user") {
-            const urlStr = request.data[0];
-            let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
-            const elementInfo = request.data[1];
-            const elementIdx = request.data[2];
-            writeDarkPatternData(encodedUrl, elementInfo, elementIdx);
+            const urlStr = request.data.page;
+            const elementInfo = request.data.elementInfo;
+            const elementIdx = request.data.elementIdx;
+            writeDarkPatternData(urlStr, elementInfo, elementIdx);
         } else if (request.msg === "Retrieve with URL") {
             // If reports requested, retrieve from database and respond
             chrome.tabs.query(

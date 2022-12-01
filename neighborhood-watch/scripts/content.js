@@ -1,3 +1,4 @@
+
 chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
     if (response) {
         let reports = response.data;
@@ -8,13 +9,13 @@ chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request) {
-        if (request.msg == "Report from user") {
-            elementSelect();
+        if (request.msg == "Report event") {
+            elementSelect(request.data);
         }
     }
 });
 
-function elementSelect() {
+function elementSelect(pageDetails) {
     const highlighter = document.createElement("div");
     highlighter.style.position = "absolute";
     highlighter.style.background = "rgba(38, 24, 159, 0.5)";
@@ -48,6 +49,13 @@ function elementSelect() {
         highlighter.onclick = () => {
             // TODO: complete report code
             console.log(target);
+            entry = {
+                page: pageDetails.url,
+                elementInfo: "exampleInfo",
+                elementIdx: 5
+            }
+            chrome.runtime.sendMessage({msg: "Report from user", data: entry});
+            highlighter.remove();
         }
     });
 }
