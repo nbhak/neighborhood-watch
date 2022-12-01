@@ -61,7 +61,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 },
                 function(tabs) {
                     let url = tabs[0].url;
-                    console.log("URL: " + url);
                     readDarkPatternData(url, sendResponse);
             });
         }

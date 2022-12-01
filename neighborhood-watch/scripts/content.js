@@ -1,8 +1,8 @@
 chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
     if (response) {
         let reports = response.data;
-        console.log("Received reports!");
         console.log(reports);
+        // TODO: perform tagging
     }
 });
 
