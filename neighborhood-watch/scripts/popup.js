@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
             function(tabs) {
                 pageDetails = {"url": tabs[0].url};
                 chrome.tabs.sendMessage(tabs[0].id, {msg: "Report event", data: pageDetails})
-                alert("Select an element to report");
                 window.close();
             }
         );
