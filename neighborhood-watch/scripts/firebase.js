@@ -28,7 +28,11 @@ function readDarkPatternData(urlStr, sendResponse) {
     let reports = [];
     get(reference).then((snapshot) => {
         snapshot.forEach((child) => {
-          reports.push(child.val());
+            let k = child.key;
+            reports.push({
+                info: child.key,
+                indices: child.val()
+            });
         });
         sendResponse({data: reports});
       }).catch((error) => {
