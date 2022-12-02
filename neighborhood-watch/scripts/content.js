@@ -5,6 +5,7 @@ function tagElement(reportData) {
     // Iterate through elements of particular type to tag each one
     for (let idx in reportData.indices) {
         const element = elementMatches[idx];
+        // TODO: change this to a better looking tag
         element.style.border = "5px solid red";
     }
 }
