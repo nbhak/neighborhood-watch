@@ -1,3 +1,9 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+console.log("Retrieving reports...");
+
 // Tags elements of type specified in reportData
 function tagElement(reportData) {
     const elementMatches = document.querySelectorAll(reportData.info);
@@ -9,14 +15,17 @@ function tagElement(reportData) {
     }
 }
 
-// Send request to Firebase for reports for current page
-chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
-    if (response) {
-        let reports = response.data;
-        for (let reportNum in reports) {
-            tagElement(reports[reportNum]);
+// Wait for more elements to load
+sleep(2000).then(() => {
+    // Send request to Firebase for reports for current page
+    chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
+        if (response) {
+            let reports = response.data;
+            for (let reportNum in reports) {
+                tagElement(reports[reportNum]);
+            }
         }
-    }
+    });
 });
 
 // Receive message from popup to start element selection
@@ -84,6 +93,8 @@ function elementSelect(pageDetails) {
         // Account for scrolling
         highlighter.style.top = measurements.top + window.scrollY - border + "px";
         highlighter.style.left = measurements.left + window.scrollX - border + "px";
+        let oldOnclick = target.onclick;
+        target.onclick = highlighter.onclick;
         highlighter.onclick = () => {
             entry = {
                 page: pageDetails.url,
@@ -94,6 +105,7 @@ function elementSelect(pageDetails) {
             chrome.runtime.sendMessage({msg: "Report from user", data: entry});
             // Exit element selection
             highlighter.remove();
+            target.onclick = oldOnclick;
             location.reload();
         }
     });
