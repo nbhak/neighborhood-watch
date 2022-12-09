@@ -106,9 +106,9 @@ function elementSelect(pageDetails) {
             // Send message to Firebase
             chrome.runtime.sendMessage({msg: "Report from user", data: entry});
             // Exit element selection
-            highlighter.remove();
             target.onclick = oldOnclick;
-            location.reload();
+            target.style.border = "5px solid coral";
+            highlighter.remove();
         }
     });
 }
