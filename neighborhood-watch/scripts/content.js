@@ -2,16 +2,18 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-console.log("Retrieving reports...");
-
 // Tags elements of type specified in reportData
 function tagElement(reportData) {
+    console.log("Retrieved report data:");
+    console.log(reportData);
     const elementMatches = document.querySelectorAll(reportData.info);
     // Iterate through elements of particular type to tag each one
     for (let idx in reportData.indices) {
         const element = elementMatches[idx];
         // TODO: change this to a better looking tag
-        element.style.border = "5px solid coral";
+        if (element.style) {
+            element.style.border = "5px solid coral";
+        }
     }
 }
 
