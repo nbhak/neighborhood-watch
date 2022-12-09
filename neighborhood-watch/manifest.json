@@ -30,5 +30,11 @@
     "permissions": [
       "activeTab",
       "tabs"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["images/flashlight.png"],
+        "matches": ["<all_urls>"]
+      }
     ]
 }
