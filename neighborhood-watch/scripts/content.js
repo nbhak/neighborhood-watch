@@ -70,9 +70,12 @@ function elementSelect(pageDetails) {
     highlighter.style.zIndex = "0";
     document.body.appendChild(highlighter);
     let prev;
-    document.addEventListener("mousemove", (e) => {
-        const elementMatches = document.querySelectorAll('a');
-        console.log(elementMatches.length);
+    let changedTarget;
+    let prevOnClick;
+    document.addEventListener("mousemove", function allowSelection(e) {
+        if (changedTarget) {
+            changedTarget.onclick = prevOnClick;
+        }
         let target = e.target;
         if (target === highlighter) {
             const below = document.elementsFromPoint(e.clientX, e.clientY)[1];
@@ -85,6 +88,7 @@ function elementSelect(pageDetails) {
         } else {
             prev = target;
         }
+        // target.appendChild(highlighter);
         const measurements = target.getBoundingClientRect();
         const targetHeight = measurements.height;
         const targetWidth = measurements.width;
@@ -95,8 +99,6 @@ function elementSelect(pageDetails) {
         // Account for scrolling
         highlighter.style.top = measurements.top + window.scrollY - border + "px";
         highlighter.style.left = measurements.left + window.scrollX - border + "px";
-        let oldOnclick = target.onclick;
-        target.onclick = highlighter.onclick;
         highlighter.onclick = () => {
             entry = {
                 page: pageDetails.url,
@@ -106,9 +108,12 @@ function elementSelect(pageDetails) {
             // Send message to Firebase
             chrome.runtime.sendMessage({msg: "Report from user", data: entry});
             // Exit element selection
-            target.onclick = oldOnclick;
             target.style.border = "5px solid coral";
+            document.removeEventListener("mousemove", allowSelection);
             highlighter.remove();
         }
+        prevOnClick = target.onclick;
+        changedTarget = target;
+        target.onclick = highlighter.onclick;
     });
 }
