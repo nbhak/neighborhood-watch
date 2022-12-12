@@ -16,7 +16,7 @@
     "action": {
       "default_icon": "images/icon.png",
       "default_popup": "popup.html",
-      "default_title": "My very first chrome extension WHOOP!!"
+      "default_title": "Neighborhood Watch: Tag Dark Patterns"
     },
     "content_scripts": [
         {
