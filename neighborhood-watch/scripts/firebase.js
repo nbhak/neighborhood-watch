@@ -42,7 +42,6 @@ function readDarkPatternData(urlStr, sendResponse) {
 
 // Writes report for element to database
 function writeDarkPatternData(urlStr, elementInfo, elementIdx) {
-    console.log("Writing to firebase: " + elementInfo);
     let encodedUrl = encodeURIComponent(urlStr).replaceAll('.', '%2E');
     const reportRef = ref(db, 'urls/' + encodedUrl + '/' + elementInfo + '/' + elementIdx);
     set(reportRef, true);
