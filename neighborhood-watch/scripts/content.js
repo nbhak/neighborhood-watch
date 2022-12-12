@@ -10,13 +10,13 @@ function tagElement(reportData) {
         const element = elementMatches[idx];
         // TODO: change this to a better looking tag
         if (element.style) {
-            element.style.border = "5px solid aquamarine";
+            element.style.border = "5px solid red";
         }
     }
 }
 
 // Wait for more elements to load
-sleep(2000).then(() => {
+sleep(1000).then(() => {
     // Send request to Firebase for reports for current page
     chrome.runtime.sendMessage({msg: "Retrieve with URL"}, (response) => {
         if (response) {
@@ -106,7 +106,7 @@ function elementSelect(pageDetails) {
             // Send message to Firebase
             chrome.runtime.sendMessage({msg: "Report from user", data: entry});
             // Exit element selection
-            target.style.border = "5px solid coral";
+            target.style.border = "5px solid red";
             document.removeEventListener("mousemove", allowSelection);
             highlighter.remove();
         }
